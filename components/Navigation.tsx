@@ -36,18 +36,19 @@ export default function Navigation() {
         <div className="hidden md:flex items-center gap-8">
           <NavLink href="#products">AI Computers</NavLink>
           <NavLink href="#solutions">Solutions</NavLink>
+          <NavLink href="/ai-bootcamp">AI Bootcamp</NavLink>
           <NavLink href="#knowledge">Knowledge</NavLink>
-          <NavLink href="#news">News</NavLink>
         </div>
 
         {/* CTA Button */}
-        <motion.button
+        <motion.a
+          href="/ai-bootcamp"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="btn-premium"
         >
-          Plan een gesprek
-        </motion.button>
+          Boek bootcamp
+        </motion.a>
       </div>
     </motion.nav>
   );
