@@ -338,6 +338,17 @@ export default function AIBootcampPage() {
       {/* Force cream background on body for this route, regardless of global dark theme */}
       <style>{`html,body{background:#faf9f5 !important;color:#141413 !important;}`}</style>
 
+      {/*
+        Mark the document as light-theme so the gradient scrollbar
+        from globals.css (scoped on :root:not([data-theme="light"]))
+        does not leak onto this cream page.
+      */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.setAttribute('data-theme','light');`,
+        }}
+      />
+
       {/* JSON-LD */}
       <script
         type="application/ld+json"
@@ -373,22 +384,22 @@ export default function AIBootcampPage() {
             </span>
             <span>AIOW</span>
           </Link>
-          <div className="hidden items-center gap-8 text-[14px] text-[color:var(--muted)] md:flex">
-            <a href="#programma" className="transition-colors hover:text-[color:var(--ink)]">
-              Programma
-            </a>
-            <a href="#workflow" className="transition-colors hover:text-[color:var(--ink)]">
-              Voorbeeld
-            </a>
-            <a href="#cases" className="transition-colors hover:text-[color:var(--ink)]">
-              Voorgangers
-            </a>
-            <a href="#pakketten" className="transition-colors hover:text-[color:var(--ink)]">
-              Pakketten
-            </a>
-            <a href="#intake" className="transition-colors hover:text-[color:var(--ink)]">
-              Intake
-            </a>
+          <div className="hidden items-center gap-2 text-[14px] text-[color:var(--muted)] md:flex">
+            {[
+              ['#programma', 'Programma'],
+              ['#workflow', 'Voorbeeld'],
+              ['#cases', 'Voorgangers'],
+              ['#pakketten', 'Pakketten'],
+              ['#intake', 'Intake'],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                className="inline-flex min-h-[44px] items-center rounded-md px-3 transition-colors hover:text-[color:var(--ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
+              >
+                {label}
+              </a>
+            ))}
           </div>
           <a
             href={whatsappHref}
