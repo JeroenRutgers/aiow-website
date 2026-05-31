@@ -217,7 +217,7 @@ function Check() {
 export default function AIBootcampPage() {
   return (
     <div
-      className={`${serif.variable} ${ui.variable}`}
+      className={`${serif.variable} ${ui.variable} min-h-screen`}
       style={{
         ['--cream' as string]: '#faf9f5',
         ['--ink' as string]: '#141413',
@@ -231,6 +231,8 @@ export default function AIBootcampPage() {
         fontFamily: 'var(--font-serif), Georgia, serif',
       }}
     >
+      {/* Force cream background on body for this route, regardless of global dark theme */}
+      <style>{`html,body{background:#faf9f5 !important;color:#141413 !important;}`}</style>
       {/* SKIP LINK */}
       <a
         href="#main"
