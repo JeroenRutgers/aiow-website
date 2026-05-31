@@ -1,26 +1,36 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0a0e1a;
-  --foreground: #ffffff;
-}
+@layer base {
+  :root {
+    --background: #0a0e1a;
+    --foreground: #ffffff;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  /*
+   * Tailwind v4 preflight already resets margins/padding on the elements
+   * we rely on (body, h1-h6, p, ul, ol, blockquote, fieldset, legend, …).
+   * We intentionally do NOT add a global `* { margin:0; padding:0 }` here,
+   * because that rule — when placed outside a layer — beats Tailwind
+   * utilities like `mx-auto`, `px-5`, `mb-6`, … due to CSS Cascade Layers.
+   * Keep only the safe additions inside @layer base so utilities win.
+   */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* Glassmorphism Utilities */
@@ -107,20 +117,23 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
+/* Decorative scrollbar — only for the dark theme.
+   We scope by checking the computed body background so light/cream pages
+   (like /ai-bootcamp, which paints body cream via inline <style>) get
+   the native scrollbar instead of a jarring purple gradient. */
+:root:not([data-theme="light"]) ::-webkit-scrollbar {
   width: 8px;
 }
 
-::-webkit-scrollbar-track {
+:root:not([data-theme="light"]) ::-webkit-scrollbar-track {
   background: #0a0e1a;
 }
 
-::-webkit-scrollbar-thumb {
+:root:not([data-theme="light"]) ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #0ea5e9 0%, #8b5cf6 100%);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+:root:not([data-theme="light"]) ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #0ea5e9 0%, #a78bfa 100%);
 }

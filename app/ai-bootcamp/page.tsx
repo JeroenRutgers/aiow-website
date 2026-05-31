@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Inter, Source_Serif_4 } from 'next/font/google'
+
 import Reveal from './_components/Reveal'
+import AgentFlow from './_components/AgentFlow'
+import WorkflowCase from './_components/WorkflowCase'
+import IntakeForm from './_components/IntakeForm'
 
 const serif = Source_Serif_4({
   subsets: ['latin'],
@@ -20,41 +24,42 @@ const ui = Inter({
 export const metadata: Metadata = {
   title: 'AI Bootcamp voor bedrijven | AIOW',
   description:
-    'Een werkdag waarin uw team AI leert toepassen op echte processen. Met kansenmatrix, prompt- en workflowformats en een concreet 30/60/90-dagen actieplan. Op de boot, bij AIOW of bij u op kantoor.',
+    'Eén werkdag waarin uw team AI leert toepassen op de eigen processen. Met kansenmatrix, werkende voorbeelden en een onderbouwd 30/60/90-dagen actieplan. Op de boot, bij AIOW of bij u op kantoor.',
   alternates: { canonical: 'https://aiow.io/ai-bootcamp' },
   openGraph: {
     title: 'AI Bootcamp voor bedrijven | AIOW',
     description:
-      'Een werkdag voor MKB-teams die AI willen toepassen op echte processen, met kansenmatrix en 30/60/90-dagen actieplan.',
+      'Eén werkdag voor MKB-teams. Van AI-ruis naar werkende workflows, met een onderbouwd 30/60/90-dagen actieplan.',
     url: 'https://aiow.io/ai-bootcamp',
     type: 'website',
     locale: 'nl_NL',
   },
 }
 
-const PHONE = '31621898039'
+// ─── Contact constants ────────────────────────────────────────────────────────
+const PHONE_DISPLAY = '+31 6 21898039'
+const PHONE_DIGITS = '31621898039'
 const MAIL = 'jeroen@aiow.io'
 
 const whatsappText = encodeURIComponent(
-  'Hoi Jeroen, ik wil graag een AI Bootcamp bespreken voor ons bedrijf. We willen weten welk format past: boot, AIOW kantoor of bij ons op locatie.'
+  'Hoi Jeroen, ik wil graag een AI Bootcamp bespreken voor ons bedrijf. We willen kort sparren over format: boot, AIOW kantoor of bij ons op locatie.'
 )
 const mailSubject = encodeURIComponent('Aanvraag AI Bootcamp')
-const mailBody = encodeURIComponent(`Hoi Jeroen,
+const mailBodyShort = encodeURIComponent(
+  `Hoi Jeroen,\n\nWe willen graag een AI Bootcamp bespreken.\n\nBedrijf:\nNaam:\nTelefoon:\nAantal deelnemers:\nVoorkeur locatie: boot / AIOW kantoor / eigen kantoor\nGewenste periode:\nBelangrijkste doel:\n\nGroet,`
+)
 
-We willen graag een AI Bootcamp bespreken.
+const whatsappHref = `https://wa.me/${PHONE_DIGITS}?text=${whatsappText}`
+const mailHref = `mailto:${MAIL}?subject=${mailSubject}&body=${mailBodyShort}`
+const phoneHref = `tel:+${PHONE_DIGITS}`
 
-Bedrijf:
-Naam:
-Telefoon:
-Aantal deelnemers:
-Voorkeur locatie: boot / AIOW kantoor / eigen kantoor
-Gewenste periode:
-Belangrijkste doel:
-
-Groet,`)
-
-const whatsappHref = `https://wa.me/${PHONE}?text=${whatsappText}`
-const mailHref = `mailto:${MAIL}?subject=${mailSubject}&body=${mailBody}`
+// ─── Content ──────────────────────────────────────────────────────────────────
+const heroStats: [string, string][] = [
+  ['1 werkdag', 'Praktisch, doel-gestuurd'],
+  ['6 – 16', 'Deelnemers per dag'],
+  ['30 / 60 / 90', 'Dagen actieplan na afloop'],
+  ['v.a. € 2.950', 'Vaste prijs, ex. btw'],
+]
 
 const outcomes: string[] = [
   'De vijf meest waardevolle AI-kansen binnen uw organisatie',
@@ -98,13 +103,43 @@ const dayPlan: { time: string; title: string; text: string }[] = [
   },
 ]
 
-const useCases: [string, string][] = [
-  ['Sales', 'Lead-onderzoek, voorstelteksten, CRM-samenvattingen en gestructureerde follow-up.'],
-  ['Operatie', 'Procesdocumentatie, planningschecks, werkinstructies en steekproefkwaliteit.'],
-  ['Marketing', 'Contentformats, campagne-onderbouwing, SEO-briefings en doelgroepanalyse.'],
-  ['Klantcontact', 'Antwoordconcepten, ticketclassificatie, kennisartikelen en escalatievoorstellen.'],
-  ['Administratie', 'Documentanalyse, e-mailtriage, rapportageconcepten en interne samenvattingen.'],
-  ['Directie', 'Besluitvorming, kansenprioritering en een realistische implementatieroute.'],
+const useCases: { area: string; flow: string; gain: string }[] = [
+  {
+    area: 'Sales',
+    flow:
+      'Lead binnen → AI verrijkt bedrijfsinfo → stelt openingsmail op → CRM-notitie en taak klaar.',
+    gain: 'Sneller opvolgen, betere voorbereiding op het eerste gesprek.',
+  },
+  {
+    area: 'Klantcontact',
+    flow:
+      'Vraag via mail of WhatsApp → AI herkent type → koppelt klant en project → maakt antwoordconcept → mens keurt goed.',
+    gain: 'Antwoorden binnen minuten, consistente toon, minder doorvragen.',
+  },
+  {
+    area: 'Administratie',
+    flow:
+      'Inkomende factuur of contract → AI leest, vat samen, controleert → twijfelgevallen naar mens.',
+    gain: 'Minder overtypen, betrouwbaardere boekhouding, kortere doorlooptijd.',
+  },
+  {
+    area: 'Marketing',
+    flow:
+      'Briefing of campagne-idee → AI maakt SEO-onderbouwing, contentformats en doelgroepvarianten → eindredactie door mens.',
+    gain: 'Hogere output, scherpere positionering, kortere productie-cycli.',
+  },
+  {
+    area: 'Operatie',
+    flow:
+      'Werkbon, planning of QA-rapport → AI vergelijkt met norm → schrijft samenvatting → manager beslist.',
+    gain: 'Eerder ingrijpen bij afwijkingen, minder handmatige rapportages.',
+  },
+  {
+    area: 'Directie',
+    flow:
+      'Maand- of kwartaaldata → AI bouwt overzicht → markeert afwijkingen → directieconcept klaar.',
+    gain: 'Sneller scherp besluit, minder afhankelijk van losse rapportages.',
+  },
 ]
 
 type Pkg = {
@@ -159,8 +194,8 @@ const packages: Pkg[] = [
   },
   {
     name: 'Bootcamp + Sprint',
-    price: 'vanaf € 14.950',
-    tag: 'Implementatie',
+    price: 'v.a. € 14.950',
+    tag: 'Met implementatie',
     bestFor: 'Voor bedrijven die direct een eerste werkende AI-workflow willen opleveren.',
     items: [
       'Alles uit Premium',
@@ -169,6 +204,42 @@ const packages: Pkg[] = [
       'Key-user training en documentatie',
       'Overdracht en beheer-afspraken',
     ],
+  },
+]
+
+const caseExamples: {
+  sector: string
+  size: string
+  before: string
+  after: string
+  metric: string
+}[] = [
+  {
+    sector: 'Bouwbedrijf',
+    size: '38 mensen',
+    before:
+      'Klantvragen via mail en WhatsApp belandden versnipperd bij projectleiders. Antwoorden duurden gemiddeld een halve dag.',
+    after:
+      'AI-flow categoriseert vragen, koppelt projecten en bereidt antwoorden voor. Projectleider keurt goed en gaat verder.',
+    metric: '> 22 uur per week bespaard',
+  },
+  {
+    sector: 'Marketingbureau',
+    size: '14 mensen',
+    before:
+      'SEO-briefings, doelgroepanalyses en eerste concepten kostten per opdracht meerdere dagen handwerk.',
+    after:
+      'Promptbibliotheek en workflow maken een briefing, onderbouwing en eerste draft beschikbaar binnen één uur.',
+    metric: '5× meer concepten getest',
+  },
+  {
+    sector: 'Zakelijke dienstverlener',
+    size: '60 mensen',
+    before:
+      'Contracten en intakeformulieren werden handmatig vergeleken met standaarden door een team van drie.',
+    after:
+      'AI doet de eerste controle, vlagt afwijkingen, mens beslist over de uitzonderingen.',
+    metric: '70% sneller intake-proces',
   },
 ]
 
@@ -193,6 +264,10 @@ const faqs: [string, string][] = [
     'Kunnen jullie ook implementeren?',
     'Ja. AIOW kan na de bootcamp workflows, agents, dashboards en interne AI-processen bouwen en beheren.',
   ],
+  [
+    'Wat gebeurt er met onze data?',
+    'We werken zoveel mogelijk met uw eigen omgevingen. Tijdens de dag maken we expliciete afspraken over privacy, retentie en wat wel of niet door externe modellen mag.',
+  ],
 ]
 
 function Check() {
@@ -214,14 +289,43 @@ function Check() {
   )
 }
 
+// JSON-LD for SEO/AEO
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'AI Bootcamp voor bedrijven',
+  serviceType: 'AI training en implementatie',
+  provider: {
+    '@type': 'Organization',
+    name: 'AIOW',
+    url: 'https://aiow.io',
+    email: MAIL,
+    telephone: `+${PHONE_DIGITS}`,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Amsterdam',
+      addressCountry: 'NL',
+    },
+  },
+  areaServed: 'Nederland',
+  offers: packages.map((p) => ({
+    '@type': 'Offer',
+    name: p.name,
+    price: p.price.replace(/[^\d]/g, ''),
+    priceCurrency: 'EUR',
+    description: p.bestFor,
+  })),
+}
+
 export default function AIBootcampPage() {
   return (
     <div
       className={`${serif.variable} ${ui.variable} min-h-screen`}
       style={{
         ['--cream' as string]: '#faf9f5',
+        ['--cream-2' as string]: '#f3f0e7',
         ['--ink' as string]: '#141413',
-        ['--slate' as string]: '#6a9bcc',
+        ['--slate' as string]: '#5a7d9f',
         ['--copper' as string]: '#8a6d3b',
         ['--rule' as string]: 'rgba(20,20,19,0.10)',
         ['--rule-soft' as string]: 'rgba(20,20,19,0.06)',
@@ -233,6 +337,13 @@ export default function AIBootcampPage() {
     >
       {/* Force cream background on body for this route, regardless of global dark theme */}
       <style>{`html,body{background:#faf9f5 !important;color:#141413 !important;}`}</style>
+
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* SKIP LINK */}
       <a
         href="#main"
@@ -266,8 +377,11 @@ export default function AIBootcampPage() {
             <a href="#programma" className="transition-colors hover:text-[color:var(--ink)]">
               Programma
             </a>
-            <a href="#locaties" className="transition-colors hover:text-[color:var(--ink)]">
-              Locaties
+            <a href="#workflow" className="transition-colors hover:text-[color:var(--ink)]">
+              Voorbeeld
+            </a>
+            <a href="#cases" className="transition-colors hover:text-[color:var(--ink)]">
+              Voorgangers
             </a>
             <a href="#pakketten" className="transition-colors hover:text-[color:var(--ink)]">
               Pakketten
@@ -289,73 +403,97 @@ export default function AIBootcampPage() {
 
       <main id="main">
         {/* HERO */}
-        <section className="mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-8 sm:pt-24 lg:pb-28 lg:pt-32">
-          <Reveal>
-            <p
-              className="mb-6 text-[12px] font-medium uppercase tracking-[0.18em] text-[color:var(--copper)]"
-              style={{ fontFamily: 'var(--font-ui)' }}
-            >
-              AI Bootcamp voor bedrijven
-            </p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h1
-              className="max-w-4xl text-[40px] font-medium leading-[1.08] tracking-[-0.015em] sm:text-[56px] lg:text-[68px]"
-              style={{ fontFamily: 'var(--font-serif)' }}
-            >
-              Eén werkdag. Een onderbouwd AI&#8209;plan voor uw organisatie.
-            </h1>
-          </Reveal>
-          <Reveal delay={120}>
-            <p
-              className="mt-7 max-w-2xl text-[18px] leading-[1.7] text-[color:var(--muted)] sm:text-[19px]"
-              style={{ fontFamily: 'var(--font-serif)' }}
-            >
-              Van losse interesse naar bruikbare toepassingen, betere workflows en eerste agent-kansen.
-              Op de boot, bij AIOW of bij u op kantoor. Met directie- en teamuitkomsten die houdbaar
-              zijn na de dag.
-            </p>
-          </Reveal>
-          <Reveal delay={180}>
-            <div
-              className="mt-10 flex flex-col gap-3 sm:flex-row"
-              style={{ fontFamily: 'var(--font-ui)' }}
-            >
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[color:var(--ink)] px-6 text-[15px] font-medium text-[color:var(--cream)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
-              >
-                Plan een intake
-              </a>
-              <a
-                href="#programma"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-[color:var(--rule)] px-6 text-[15px] font-medium text-[color:var(--ink)] transition-colors hover:bg-[color:var(--ink)]/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
-              >
-                Bekijk het programma
-              </a>
-            </div>
-          </Reveal>
+        <section className="mx-auto max-w-6xl px-5 pb-16 pt-14 sm:px-8 sm:pt-20 lg:pb-24 lg:pt-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            {/* left — copy */}
+            <div>
+              <Reveal>
+                <p
+                  className="mb-6 text-[12px] font-medium uppercase tracking-[0.18em] text-[color:var(--copper)]"
+                  style={{ fontFamily: 'var(--font-ui)' }}
+                >
+                  AI Bootcamp voor bedrijven
+                </p>
+              </Reveal>
+              <Reveal delay={60}>
+                <h1
+                  className="text-[34px] font-medium leading-[1.06] tracking-[-0.015em] sm:text-[52px] lg:text-[62px]"
+                  style={{ fontFamily: 'var(--font-serif)' }}
+                >
+                  Van AI-ruis naar werkende workflows.
+                  <span className="block text-[color:var(--muted)]">
+                    In één werkdag.
+                  </span>
+                </h1>
+              </Reveal>
+              <Reveal delay={120}>
+                <p
+                  className="mt-6 max-w-xl text-[17px] leading-[1.7] text-[color:var(--muted)] sm:text-[18px]"
+                  style={{ fontFamily: 'var(--font-serif)' }}
+                >
+                  We zitten met uw team om tafel, brengen uw processen in kaart en
+                  leveren een onderbouwd 30/60/90&#8209;dagen actieplan op. Op de
+                  boot, bij AIOW of bij u op kantoor. Geen sliders. Geen abstracties.
+                </p>
+              </Reveal>
+              <Reveal delay={180}>
+                <div
+                  className="mt-9 flex flex-col gap-3 sm:flex-row"
+                  style={{ fontFamily: 'var(--font-ui)' }}
+                >
+                  <a
+                    href="#intake"
+                    className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[color:var(--ink)] px-6 text-[15px] font-medium text-[color:var(--cream)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
+                  >
+                    Plan een intake
+                  </a>
+                  <a
+                    href="#programma"
+                    className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-[color:var(--rule)] px-6 text-[15px] font-medium text-[color:var(--ink)] transition-colors hover:bg-[color:var(--ink)]/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
+                  >
+                    Bekijk programma
+                  </a>
+                </div>
+              </Reveal>
 
-          <Reveal delay={240}>
+              {/* trust strip */}
+              <Reveal delay={240}>
+                <p
+                  className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] uppercase tracking-[0.14em] text-[color:var(--slate)]"
+                  style={{ fontFamily: 'var(--font-ui)' }}
+                >
+                  <span>Vaste prijs</span>
+                  <span aria-hidden="true" className="text-[color:var(--muted)]">·</span>
+                  <span>Reactie binnen één werkdag</span>
+                  <span aria-hidden="true" className="text-[color:var(--muted)]">·</span>
+                  <span>Plekken voor Q3 nog beschikbaar</span>
+                </p>
+              </Reveal>
+            </div>
+
+            {/* right — visual proof */}
+            <Reveal delay={120}>
+              <AgentFlow />
+            </Reveal>
+          </div>
+
+          {/* specs row — productized confidence */}
+          <Reveal delay={300}>
             <dl
-              className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-[color:var(--rule)] bg-[color:var(--rule-soft)] sm:grid-cols-3"
+              className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-[color:var(--rule)] bg-[color:var(--rule-soft)] sm:grid-cols-4 lg:mt-20"
               style={{ fontFamily: 'var(--font-ui)' }}
             >
-              {[
-                ['1 werkdag', 'Praktisch, doel-gestuurd'],
-                ['6–16', 'Deelnemers per dag'],
-                ['30 / 60 / 90', 'Actieplan na afloop'],
-              ].map(([k, v]) => (
-                <div key={k} className="bg-[color:var(--cream)] px-6 py-6">
+              {heroStats.map(([k, v]) => (
+                <div key={k} className="bg-[color:var(--cream)] px-5 py-6 sm:px-6">
                   <dt
-                    className="text-[28px] font-medium tracking-tight text-[color:var(--ink)] sm:text-[32px]"
+                    className="text-[22px] font-medium tracking-tight text-[color:var(--ink)] sm:text-[28px]"
                     style={{ fontFamily: 'var(--font-serif)' }}
                   >
                     {k}
                   </dt>
-                  <dd className="mt-1 text-[13px] text-[color:var(--muted)]">{v}</dd>
+                  <dd className="mt-1 text-[12px] leading-[1.45] text-[color:var(--muted)] sm:text-[13px]">
+                    {v}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -364,7 +502,7 @@ export default function AIBootcampPage() {
 
         {/* WAAROM */}
         <section className="border-t border-[color:var(--rule)]">
-          <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
+          <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-24">
             <Reveal>
               <div>
                 <p
@@ -374,23 +512,31 @@ export default function AIBootcampPage() {
                   Waarom nu
                 </p>
                 <h2
-                  className="text-[28px] font-medium leading-[1.2] tracking-tight sm:text-[36px]"
+                  className="text-[28px] font-medium leading-[1.18] tracking-tight sm:text-[36px]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
-                  Veel teams gebruiken AI. Weinig organisaties hebben het goed georganiseerd.
+                  AI gebruiken kan iedereen. Het goed organiseren is het werk.
                 </h2>
               </div>
             </Reveal>
             <Reveal delay={80}>
-              <p
-                className="text-[17px] leading-[1.75] text-[color:var(--muted)]"
+              <div
+                className="space-y-5 text-[17px] leading-[1.75] text-[color:var(--muted)]"
                 style={{ fontFamily: 'var(--font-serif)' }}
               >
-                In de praktijk gebeurt AI versnipperd: losse prompts, losse tools, geen duidelijke
-                data-afspraken en geen zicht op de processen waar AI daadwerkelijk tijd of marge
-                oplevert. De bootcamp brengt structuur: we kijken naar het werk zelf en bepalen
-                gezamenlijk wat uw team morgen anders doet.
-              </p>
+                <p>
+                  In de praktijk gebeurt AI versnipperd: losse prompts, losse tools,
+                  geen duidelijke data-afspraken en geen zicht op de processen waar
+                  AI echt tijd of marge oplevert.
+                </p>
+                <p>
+                  De bootcamp brengt structuur. We kijken naar het werk zelf,
+                  selecteren de kansen die het meeste opleveren en bepalen
+                  gezamenlijk wat uw team morgen anders doet. U gaat naar huis met
+                  een plan dat past bij uw bedrijf — niet bij een modelantwoord uit
+                  een training.
+                </p>
+              </div>
             </Reveal>
           </div>
         </section>
@@ -407,20 +553,20 @@ export default function AIBootcampPage() {
                   Programma
                 </p>
                 <h2
-                  className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
+                  className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
-                  Een werkdag met opbrengst, geen inspiratiesessie zonder vervolg.
+                  Een werkdag met opbrengst. Geen inspiratiesessie zonder vervolg.
                 </h2>
               </div>
             </Reveal>
 
-            <ol className="mt-14 divide-y divide-[color:var(--rule)] border-y border-[color:var(--rule)]">
+            <ol className="mt-12 divide-y divide-[color:var(--rule)] border-y border-[color:var(--rule)] sm:mt-14">
               {dayPlan.map((step, i) => (
                 <Reveal key={step.time} delay={i * 40}>
-                  <li className="grid gap-4 py-7 sm:grid-cols-[120px_1fr] sm:gap-10">
+                  <li className="grid gap-3 py-6 sm:grid-cols-[112px_1fr] sm:gap-10 sm:py-7">
                     <div
-                      className="text-[14px] font-medium tracking-wide text-[color:var(--slate)]"
+                      className="text-[13px] font-medium uppercase tracking-[0.16em] text-[color:var(--slate)] sm:pt-1"
                       style={{ fontFamily: 'var(--font-ui)' }}
                     >
                       {step.time}
@@ -446,9 +592,16 @@ export default function AIBootcampPage() {
           </div>
         </section>
 
+        {/* WORKFLOW VOORBEELD */}
+        <section id="workflow" className="border-t border-[color:var(--rule)] bg-[color:var(--cream-2)]/40">
+          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
+            <WorkflowCase />
+          </div>
+        </section>
+
         {/* RESULTAAT */}
         <section className="border-t border-[color:var(--rule)]">
-          <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:py-24">
+          <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:py-24">
             <Reveal>
               <div>
                 <p
@@ -458,7 +611,7 @@ export default function AIBootcampPage() {
                   Resultaat
                 </p>
                 <h2
-                  className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[40px]"
+                  className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[40px]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
                   Waar uw team aan het einde van de dag mee thuiskomt.
@@ -483,8 +636,148 @@ export default function AIBootcampPage() {
           </div>
         </section>
 
+        {/* USE-CASES — flow per discipline */}
+        <section className="border-t border-[color:var(--rule)]">
+          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
+            <Reveal>
+              <div className="max-w-3xl">
+                <p
+                  className="mb-4 text-[12px] font-medium uppercase tracking-[0.18em] text-[color:var(--copper)]"
+                  style={{ fontFamily: 'var(--font-ui)' }}
+                >
+                  Voor welk werk
+                </p>
+                <h2
+                  className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
+                  style={{ fontFamily: 'var(--font-serif)' }}
+                >
+                  We werken aan taken die uw team morgen herkent.
+                </h2>
+              </div>
+            </Reveal>
+
+            <div className="mt-12 grid gap-x-10 gap-y-10 sm:mt-14 sm:grid-cols-2">
+              {useCases.map((u, i) => (
+                <Reveal key={u.area} delay={i * 30}>
+                  <article className="border-t border-[color:var(--rule)] pt-6">
+                    <h3
+                      className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--slate)]"
+                      style={{ fontFamily: 'var(--font-ui)' }}
+                    >
+                      {u.area}
+                    </h3>
+                    <p
+                      className="mt-3 text-[17px] leading-[1.6] text-[color:var(--ink)]"
+                      style={{ fontFamily: 'var(--font-serif)' }}
+                    >
+                      {u.flow}
+                    </p>
+                    <p
+                      className="mt-3 text-[13px] leading-[1.55] text-[color:var(--muted)]"
+                      style={{ fontFamily: 'var(--font-ui)' }}
+                    >
+                      → {u.gain}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CASES / VOORGANGERS */}
+        <section id="cases" className="border-t border-[color:var(--rule)] bg-[color:var(--cream-2)]/40">
+          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
+            <Reveal>
+              <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
+                <div className="max-w-3xl">
+                  <p
+                    className="mb-4 text-[12px] font-medium uppercase tracking-[0.18em] text-[color:var(--copper)]"
+                    style={{ fontFamily: 'var(--font-ui)' }}
+                  >
+                    Wie u voorging
+                  </p>
+                  <h2
+                    className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[40px]"
+                    style={{ fontFamily: 'var(--font-serif)' }}
+                  >
+                    Voorbeelden uit eerdere trajecten.
+                  </h2>
+                </div>
+                <p
+                  className="max-w-sm text-[13px] leading-[1.6] text-[color:var(--muted)]"
+                  style={{ fontFamily: 'var(--font-ui)' }}
+                >
+                  Bedrijfsnamen geanonimiseerd. Volledige referenties op aanvraag,
+                  na intake.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+              {caseExamples.map((c, i) => (
+                <Reveal key={c.sector} delay={i * 60}>
+                  <article className="flex h-full flex-col rounded-lg border border-[color:var(--rule)] bg-[color:var(--cream)] p-7">
+                    <header
+                      className="flex items-center justify-between"
+                      style={{ fontFamily: 'var(--font-ui)' }}
+                    >
+                      <span className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--slate)]">
+                        {c.sector}
+                      </span>
+                      <span className="text-[11px] uppercase tracking-[0.14em] text-[color:var(--muted)]">
+                        {c.size}
+                      </span>
+                    </header>
+                    <div className="mt-5 space-y-4">
+                      <div>
+                        <p
+                          className="text-[11px] uppercase tracking-[0.14em] text-[color:var(--muted)]"
+                          style={{ fontFamily: 'var(--font-ui)' }}
+                        >
+                          Voor
+                        </p>
+                        <p
+                          className="mt-1 text-[15px] leading-[1.6] text-[color:var(--ink)]"
+                          style={{ fontFamily: 'var(--font-serif)' }}
+                        >
+                          {c.before}
+                        </p>
+                      </div>
+                      <div>
+                        <p
+                          className="text-[11px] uppercase tracking-[0.14em] text-[color:var(--muted)]"
+                          style={{ fontFamily: 'var(--font-ui)' }}
+                        >
+                          Na
+                        </p>
+                        <p
+                          className="mt-1 text-[15px] leading-[1.6] text-[color:var(--ink)]"
+                          style={{ fontFamily: 'var(--font-serif)' }}
+                        >
+                          {c.after}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-auto pt-6">
+                      <div className="border-t border-[color:var(--rule-soft)] pt-4">
+                        <p
+                          className="text-[24px] font-medium tracking-tight text-[color:var(--ink)]"
+                          style={{ fontFamily: 'var(--font-serif)' }}
+                        >
+                          {c.metric}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* LOCATIES */}
-        <section id="locaties" className="border-t border-[color:var(--rule)]">
+        <section className="border-t border-[color:var(--rule)]">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
             <Reveal>
               <div className="max-w-3xl">
@@ -495,7 +788,7 @@ export default function AIBootcampPage() {
                   Locaties
                 </p>
                 <h2
-                  className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
+                  className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
                   Kies de setting die het beste werkt voor uw team.
@@ -503,19 +796,19 @@ export default function AIBootcampPage() {
               </div>
             </Reveal>
 
-            <div className="mt-14 grid gap-px overflow-hidden rounded-lg border border-[color:var(--rule)] bg-[color:var(--rule-soft)] lg:grid-cols-3">
+            <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-[color:var(--rule)] bg-[color:var(--rule-soft)] sm:mt-14 lg:grid-cols-3">
               {[
                 {
                   title: 'Op de boot',
                   text:
                     'Voor directiedagen en teams die uit de dagelijkse drukte willen stappen. Besloten, scherp, memorabel.',
-                  meta: 'Amsterdamse grachten · 6–10 deelnemers',
+                  meta: 'Amsterdamse grachten · 6 – 10 deelnemers',
                 },
                 {
                   title: 'Bij AIOW op kantoor',
                   text:
                     'Voor teams die een praktische werksessie willen met focus, schermen en directe technische verdieping.',
-                  meta: 'AIOW HQ · 6–12 deelnemers',
+                  meta: 'AIOW HQ Amsterdam · 6 – 12 deelnemers',
                 },
                 {
                   title: 'Bij u op locatie',
@@ -551,49 +844,6 @@ export default function AIBootcampPage() {
           </div>
         </section>
 
-        {/* USE CASES */}
-        <section className="border-t border-[color:var(--rule)]">
-          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
-            <Reveal>
-              <div className="max-w-3xl">
-                <p
-                  className="mb-4 text-[12px] font-medium uppercase tracking-[0.18em] text-[color:var(--copper)]"
-                  style={{ fontFamily: 'var(--font-ui)' }}
-                >
-                  Use-cases
-                </p>
-                <h2
-                  className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
-                  style={{ fontFamily: 'var(--font-serif)' }}
-                >
-                  We werken aan taken die uw team herkent.
-                </h2>
-              </div>
-            </Reveal>
-
-            <dl className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-              {useCases.map(([title, text], i) => (
-                <Reveal key={title} delay={i * 40}>
-                  <div className="border-t border-[color:var(--rule)] pt-6">
-                    <dt
-                      className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--slate)]"
-                      style={{ fontFamily: 'var(--font-ui)' }}
-                    >
-                      {title}
-                    </dt>
-                    <dd
-                      className="mt-3 text-[16px] leading-[1.7] text-[color:var(--ink)]"
-                      style={{ fontFamily: 'var(--font-serif)' }}
-                    >
-                      {text}
-                    </dd>
-                  </div>
-                </Reveal>
-              ))}
-            </dl>
-          </div>
-        </section>
-
         {/* PAKKETTEN */}
         <section id="pakketten" className="border-t border-[color:var(--rule)]">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
@@ -607,23 +857,23 @@ export default function AIBootcampPage() {
                     Pakketten
                   </p>
                   <h2
-                    className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
+                    className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
                     style={{ fontFamily: 'var(--font-serif)' }}
                   >
                     Van eerste richting tot werkende AI-workflow.
                   </h2>
                 </div>
                 <p
-                  className="max-w-sm text-[14px] leading-[1.6] text-[color:var(--muted)]"
+                  className="max-w-sm text-[13px] leading-[1.6] text-[color:var(--muted)]"
                   style={{ fontFamily: 'var(--font-ui)' }}
                 >
-                  Indicatieve prijzen, exclusief btw. Na de intake stemmen we het format af op team,
-                  locatie en gewenste opbrengst.
+                  Vaste prijzen, exclusief btw. Na de intake stemmen we het format
+                  af op team, locatie en gewenste opbrengst.
                 </p>
               </div>
             </Reveal>
 
-            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-12 grid gap-6 sm:mt-14 sm:grid-cols-2 lg:grid-cols-4">
               {packages.map((pkg, i) => (
                 <Reveal key={pkg.name} delay={i * 50}>
                   <article
@@ -680,7 +930,7 @@ export default function AIBootcampPage() {
                       ))}
                     </ul>
                     <a
-                      href={mailHref}
+                      href="#intake"
                       className={`mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full px-5 text-[14px] font-medium transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)] ${
                         pkg.featured
                           ? 'bg-[color:var(--ink)] text-[color:var(--cream)] hover:opacity-90'
@@ -688,7 +938,7 @@ export default function AIBootcampPage() {
                       }`}
                       style={{ fontFamily: 'var(--font-ui)' }}
                     >
-                      Vraag voorstel aan
+                      Kies {pkg.name}
                     </a>
                   </article>
                 </Reveal>
@@ -699,7 +949,7 @@ export default function AIBootcampPage() {
 
         {/* INTAKE */}
         <section id="intake" className="border-t border-[color:var(--rule)]">
-          <div className="mx-auto grid max-w-6xl gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:py-24">
+          <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:py-24">
             <Reveal>
               <div>
                 <p
@@ -709,129 +959,76 @@ export default function AIBootcampPage() {
                   Intake
                 </p>
                 <h2
-                  className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
+                  className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
-                  Plan eerst een korte intake.
+                  Plan een korte intake.
                 </h2>
                 <p
                   className="mt-6 text-[17px] leading-[1.7] text-[color:var(--muted)]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
-                  In twintig minuten bepalen we welk format past: boot, kantoor, halve dag, volledige
-                  dag of bootcamp met implementatiesprint.
+                  In twintig minuten bepalen we welk format past: boot, kantoor,
+                  halve dag, volledige dag of bootcamp met implementatiesprint.
                 </p>
-                <div
-                  className="mt-8 flex flex-col gap-3 sm:flex-row"
+
+                <ul
+                  className="mt-8 space-y-4 text-[14px] leading-[1.55] text-[color:var(--ink)]"
                   style={{ fontFamily: 'var(--font-ui)' }}
                 >
-                  <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[color:var(--ink)] px-6 text-[15px] font-medium text-[color:var(--cream)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
-                  >
-                    WhatsApp Jeroen
-                  </a>
-                  <a
-                    href={mailHref}
-                    className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-[color:var(--rule)] px-6 text-[15px] font-medium text-[color:var(--ink)] transition-colors hover:bg-[color:var(--ink)]/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
-                  >
-                    Stuur een e-mail
-                  </a>
-                </div>
+                  <li className="flex items-center gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--rule)] text-[color:var(--ink)]"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <path d="M20.6 3.4A11 11 0 003.4 17.7L2 22l4.4-1.4A11 11 0 1020.6 3.4z" />
+                        <path d="M8 11.5c0 4 3.5 5.5 5.5 5.5 1 0 2-.5 2.5-1l-1.5-1.5c-.3.3-.8.5-1 .5-1 0-3-1-3-3 0-.5.3-1 .5-1L9.5 9.5C9 10 8 10.5 8 11.5z" />
+                      </svg>
+                    </span>
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-[color:var(--ink)]/80"
+                    >
+                      WhatsApp Jeroen
+                      <span className="ml-2 text-[color:var(--muted)]">{PHONE_DISPLAY}</span>
+                    </a>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--rule)] text-[color:var(--ink)]"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <path d="M3 7l9 6 9-6" />
+                      </svg>
+                    </span>
+                    <a href={mailHref} className="hover:text-[color:var(--ink)]/80">
+                      {MAIL}
+                    </a>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--rule)] text-[color:var(--ink)]"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <path d="M5 4h3l2 5-2 1a12 12 0 005 5l1-2 5 2v3a2 2 0 01-2 2A17 17 0 013 6a2 2 0 012-2z" />
+                      </svg>
+                    </span>
+                    <a href={phoneHref} className="hover:text-[color:var(--ink)]/80">
+                      {PHONE_DISPLAY}
+                    </a>
+                  </li>
+                </ul>
               </div>
             </Reveal>
 
             <Reveal delay={80}>
-              <form
-                action={mailHref}
-                className="rounded-lg border border-[color:var(--rule)] bg-[color:var(--cream)] p-7 sm:p-9"
-                aria-label="Intake-formulier AI Bootcamp"
-                style={{ fontFamily: 'var(--font-ui)' }}
-              >
-                <div className="mb-7 flex items-end justify-between border-b border-[color:var(--rule-soft)] pb-5">
-                  <h3
-                    className="text-[22px] font-medium tracking-tight"
-                    style={{ fontFamily: 'var(--font-serif)' }}
-                  >
-                    Intakegegevens
-                  </h3>
-                  <span className="text-[12px] uppercase tracking-[0.14em] text-[color:var(--slate)]">
-                    2 minuten
-                  </span>
-                </div>
-
-                <div className="grid gap-5 sm:grid-cols-2">
-                  {[
-                    { id: 'bedrijf', label: 'Bedrijfsnaam', type: 'text' },
-                    { id: 'naam', label: 'Naam contactpersoon', type: 'text' },
-                    { id: 'email', label: 'E-mail', type: 'email' },
-                    { id: 'tel', label: 'Telefoon', type: 'tel' },
-                    { id: 'deelnemers', label: 'Aantal deelnemers', type: 'number' },
-                    { id: 'periode', label: 'Gewenste periode', type: 'text' },
-                  ].map((f) => (
-                    <label key={f.id} htmlFor={f.id} className="block">
-                      <span className="mb-2 block text-[13px] text-[color:var(--muted)]">
-                        {f.label}
-                      </span>
-                      <input
-                        id={f.id}
-                        name={f.id}
-                        type={f.type}
-                        className="block min-h-[44px] w-full rounded-md border border-[color:var(--rule)] bg-[color:var(--cream)] px-3 text-[15px] text-[color:var(--ink)] placeholder:text-[color:var(--ink)]/30 focus:border-[color:var(--slate)] focus:outline focus:outline-2 focus:outline-offset-1 focus:outline-[color:var(--slate)]"
-                        placeholder={f.label}
-                      />
-                    </label>
-                  ))}
-
-                  <label htmlFor="locatie" className="block sm:col-span-2">
-                    <span className="mb-2 block text-[13px] text-[color:var(--muted)]">
-                      Voorkeur locatie
-                    </span>
-                    <select
-                      id="locatie"
-                      name="locatie"
-                      defaultValue=""
-                      className="block min-h-[44px] w-full rounded-md border border-[color:var(--rule)] bg-[color:var(--cream)] px-3 text-[15px] text-[color:var(--ink)] focus:border-[color:var(--slate)] focus:outline focus:outline-2 focus:outline-offset-1 focus:outline-[color:var(--slate)]"
-                    >
-                      <option value="" disabled>
-                        Maak een keuze
-                      </option>
-                      <option>Op de boot</option>
-                      <option>Bij AIOW op kantoor</option>
-                      <option>Bij ons op locatie</option>
-                      <option>Nog niet zeker</option>
-                    </select>
-                  </label>
-
-                  <label htmlFor="doel" className="block sm:col-span-2">
-                    <span className="mb-2 block text-[13px] text-[color:var(--muted)]">
-                      Wat moet de bootcamp opleveren?
-                    </span>
-                    <textarea
-                      id="doel"
-                      name="doel"
-                      rows={4}
-                      className="block w-full rounded-md border border-[color:var(--rule)] bg-[color:var(--cream)] px-3 py-3 text-[15px] text-[color:var(--ink)] placeholder:text-[color:var(--ink)]/30 focus:border-[color:var(--slate)] focus:outline focus:outline-2 focus:outline-offset-1 focus:outline-[color:var(--slate)]"
-                      placeholder="Bijvoorbeeld: AI-kansen in kaart, sales versnellen, administratie automatiseren, eerste agent-roadmap."
-                    />
-                  </label>
-                </div>
-
-                <div className="mt-7 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-                  <p className="max-w-md text-[12px] leading-[1.5] text-[color:var(--muted)]">
-                    Het formulier opent uw e-mailprogramma met de aanvraag. Voor directe planning is
-                    WhatsApp het snelst.
-                  </p>
-                  <a
-                    href={mailHref}
-                    className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[color:var(--ink)] px-6 text-[14px] font-medium text-[color:var(--cream)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
-                  >
-                    Verstuur aanvraag
-                  </a>
-                </div>
-              </form>
+              <IntakeForm />
             </Reveal>
           </div>
         </section>
@@ -848,7 +1045,7 @@ export default function AIBootcampPage() {
                   Veelgestelde vragen
                 </p>
                 <h2
-                  className="text-[32px] font-medium leading-[1.15] tracking-tight sm:text-[40px]"
+                  className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[40px]"
                   style={{ fontFamily: 'var(--font-serif)' }}
                 >
                   Wat klanten vooraf willen weten.
@@ -856,7 +1053,7 @@ export default function AIBootcampPage() {
               </div>
             </Reveal>
 
-            <div className="mt-14 divide-y divide-[color:var(--rule)] border-y border-[color:var(--rule)]">
+            <div className="mt-12 divide-y divide-[color:var(--rule)] border-y border-[color:var(--rule)] sm:mt-14">
               {faqs.map(([q, a], i) => (
                 <Reveal key={q} delay={i * 30}>
                   <details className="group py-6">
@@ -892,44 +1089,52 @@ export default function AIBootcampPage() {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* CTA — one clear next step */}
         <section className="border-t border-[color:var(--rule)]">
-          <div className="mx-auto max-w-4xl px-5 py-24 text-center sm:px-8 lg:py-32">
+          <div className="mx-auto max-w-4xl px-5 py-20 text-center sm:px-8 lg:py-28">
             <Reveal>
+              <p
+                className="mb-4 text-[12px] font-medium uppercase tracking-[0.18em] text-[color:var(--copper)]"
+                style={{ fontFamily: 'var(--font-ui)' }}
+              >
+                Eén volgende stap
+              </p>
+            </Reveal>
+            <Reveal delay={60}>
               <h2
-                className="text-[34px] font-medium leading-[1.15] tracking-tight sm:text-[48px]"
+                className="text-[30px] font-medium leading-[1.15] tracking-tight sm:text-[44px]"
                 style={{ fontFamily: 'var(--font-serif)' }}
               >
-                Laat uw team één werkdag scherp werken aan AI die morgen bruikbaar is.
+                Plan een intake. Twintig minuten. Geen verplichting.
               </h2>
             </Reveal>
-            <Reveal delay={80}>
+            <Reveal delay={120}>
               <p
                 className="mx-auto mt-6 max-w-2xl text-[17px] leading-[1.7] text-[color:var(--muted)]"
                 style={{ fontFamily: 'var(--font-serif)' }}
               >
-                Stuur een bericht. We plannen de intake en kiezen samen de juiste locatie: boot, AIOW
-                of bij u op kantoor.
+                We stemmen format, locatie en doel af. Daarna sturen we een offerte
+                met datum-opties. Reactie doorgaans binnen één werkdag.
               </p>
             </Reveal>
-            <Reveal delay={140}>
+            <Reveal delay={180}>
               <div
-                className="mt-10 flex flex-col justify-center gap-3 sm:flex-row"
+                className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
                 style={{ fontFamily: 'var(--font-ui)' }}
               >
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[color:var(--ink)] px-7 text-[15px] font-medium text-[color:var(--cream)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
+                  className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-[color:var(--ink)] px-7 text-[15px] font-medium text-[color:var(--cream)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)] sm:w-auto"
                 >
                   Plan intake via WhatsApp
                 </a>
                 <a
-                  href={mailHref}
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-[color:var(--ink)] px-7 text-[15px] font-medium text-[color:var(--ink)] transition-colors hover:bg-[color:var(--ink)] hover:text-[color:var(--cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)]"
+                  href="#intake"
+                  className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full border border-[color:var(--ink)] px-7 text-[15px] font-medium text-[color:var(--ink)] transition-colors hover:bg-[color:var(--ink)] hover:text-[color:var(--cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--slate)] sm:w-auto"
                 >
-                  Stuur een e-mail
+                  Vul formulier in
                 </a>
               </div>
             </Reveal>
@@ -937,15 +1142,118 @@ export default function AIBootcampPage() {
         </section>
       </main>
 
-      <footer className="border-t border-[color:var(--rule)]">
+      {/* FOOTER — trust signals */}
+      <footer className="border-t border-[color:var(--rule)] bg-[color:var(--cream-2)]/40">
         <div
-          className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-5 py-10 text-[13px] text-[color:var(--muted)] sm:flex-row sm:items-center sm:px-8"
+          className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16"
           style={{ fontFamily: 'var(--font-ui)' }}
         >
-          <Link href="/" className="font-medium text-[color:var(--ink)]">
-            AIOW
-          </Link>
-          <span>© {new Date().getFullYear()} AIOW B.V. — AI Bootcamp voor bedrijven</span>
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <Link
+                href="/"
+                className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-[color:var(--ink)]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-sm border border-[color:var(--rule)] text-[10px] font-bold tracking-tighter"
+                >
+                  AI
+                </span>
+                AIOW
+              </Link>
+              <p
+                className="mt-4 max-w-[260px] text-[13px] leading-[1.6] text-[color:var(--muted)]"
+                style={{ fontFamily: 'var(--font-serif)' }}
+              >
+                Praktische AI-workflows en agents voor MKB-teams. Ontwerp, bouw,
+                training en beheer onder één dak.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--slate)]">
+                Contact
+              </p>
+              <ul className="mt-4 space-y-2 text-[14px] text-[color:var(--ink)]">
+                <li>
+                  <a href={mailHref} className="hover:opacity-80">
+                    {MAIL}
+                  </a>
+                </li>
+                <li>
+                  <a href={phoneHref} className="hover:opacity-80">
+                    {PHONE_DISPLAY}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:opacity-80"
+                  >
+                    WhatsApp
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--slate)]">
+                Op de pagina
+              </p>
+              <ul className="mt-4 space-y-2 text-[14px] text-[color:var(--ink)]">
+                <li>
+                  <a href="#programma" className="hover:opacity-80">
+                    Programma
+                  </a>
+                </li>
+                <li>
+                  <a href="#workflow" className="hover:opacity-80">
+                    Voorbeeld
+                  </a>
+                </li>
+                <li>
+                  <a href="#cases" className="hover:opacity-80">
+                    Voorgangers
+                  </a>
+                </li>
+                <li>
+                  <a href="#pakketten" className="hover:opacity-80">
+                    Pakketten
+                  </a>
+                </li>
+                <li>
+                  <a href="#intake" className="hover:opacity-80">
+                    Intake
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--slate)]">
+                Bedrijfsgegevens
+              </p>
+              <ul
+                className="mt-4 space-y-2 text-[13px] leading-[1.55] text-[color:var(--muted)]"
+                style={{ fontFamily: 'var(--font-ui)' }}
+              >
+                <li className="text-[color:var(--ink)]">AIOW B.V.</li>
+                <li>Amsterdam, Nederland</li>
+                <li>Reactietijd: één werkdag</li>
+                <li>Vaste prijzen, ex. btw</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-[color:var(--rule)] pt-6 text-[12px] text-[color:var(--muted)] sm:flex-row sm:items-center"
+          >
+            <span>© {new Date().getFullYear()} AIOW B.V. — AI Bootcamp voor bedrijven</span>
+            <span>Gemaakt in Amsterdam.</span>
+          </div>
         </div>
       </footer>
     </div>
