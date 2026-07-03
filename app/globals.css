@@ -1,19 +1,29 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: #0a0e1a;
-    --foreground: #ffffff;
-  }
+@theme {
+  --color-canvas: #FAF7F2;
+  --color-ink: #211C16;
+  --color-ink-60: rgb(33 28 22 / 0.60);
+  --color-ink-40: rgb(33 28 22 / 0.40);
+  --color-terra: #D97D4A;
+  --color-terra-deep: #B65E32;
+  --color-terra-text: #B96238; /* accessible op wit voor kleine tekst */
+  --color-surface: #FFFFFF;
+  --color-surface-sunken: #F3EEE6;
+  --color-hairline: rgb(33 28 22 / 0.12);
 
-  /*
-   * Tailwind v4 preflight already resets margins/padding on the elements
-   * we rely on (body, h1-h6, p, ul, ol, blockquote, fieldset, legend, …).
-   * We intentionally do NOT add a global `* { margin:0; padding:0 }` here,
-   * because that rule — when placed outside a layer — beats Tailwind
-   * utilities like `mx-auto`, `px-5`, `mb-6`, … due to CSS Cascade Layers.
-   * Keep only the safe additions inside @layer base so utilities win.
-   */
+  --font-sans: var(--font-ui), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif-display), "Source Serif 4", Georgia, serif;
+
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.02em;
+  --tracking-body: -0.011em;
+  --tracking-kicker: 0.14em;
+}
+
+@layer base {
   *,
   *::before,
   *::after {
@@ -22,118 +32,70 @@
 
   html {
     scroll-behavior: smooth;
+    background: var(--color-canvas);
+    color: var(--color-ink);
   }
 
   body {
-    color: var(--foreground);
-    background: var(--background);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: var(--tracking-body);
   }
 }
 
-/* Glassmorphism Utilities */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.hairline {
+  border: 1px solid var(--color-hairline);
 }
 
-.glass-strong {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.glass-subtle {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Glows */
-.glow-blue {
-  box-shadow: 0 0 40px rgba(14, 165, 233, 0.3);
-}
-
-.glow-purple {
-  box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 40px rgba(6, 182, 212, 0.3);
-}
-
-.text-glow {
-  text-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Premium button */
-.btn-premium {
-  padding: 1rem 2rem;
-  border-radius: 0.75rem;
+.kicker {
+  font-size: 11px;
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--color-ink-60);
   font-weight: 600;
-  transition: all 0.3s;
-  background: linear-gradient(to right, #0ea5e9, #8b5cf6);
-  position: relative;
-  overflow: hidden;
 }
 
-.btn-premium:hover {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  transform: scale(1.05);
+::selection {
+  background: rgb(217 125 74 / 0.25);
 }
 
-.btn-glass {
-  padding: 1rem 2rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.06);
+  }
 }
 
-.btn-glass:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.1);
+@keyframes typing-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
-/* Smooth scroll */
-.smooth-scroll {
-  scroll-behavior: smooth;
-}
-
-/* Decorative scrollbar — only for the dark theme.
-   We scope by checking the computed body background so light/cream pages
-   (like /ai-bootcamp, which paints body cream via inline <style>) get
-   the native scrollbar instead of a jarring purple gradient. */
-:root:not([data-theme="light"]) ::-webkit-scrollbar {
-  width: 8px;
-}
-
-:root:not([data-theme="light"]) ::-webkit-scrollbar-track {
-  background: #0a0e1a;
-}
-
-:root:not([data-theme="light"]) ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #0ea5e9 0%, #8b5cf6 100%);
-  border-radius: 4px;
-}
-
-:root:not([data-theme="light"]) ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #0ea5e9 0%, #a78bfa 100%);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
