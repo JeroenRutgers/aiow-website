@@ -14,7 +14,10 @@ export const metadata: Metadata = {
   title: 'AIOW · AI voor het MKB, werkend in 4 tot 6 weken',
   description:
     'AIOW bouwt AI die vandaag werkt voor Nederlandse MKB-bedrijven: klantintake, planning, kennisbank en leadopvolging. Vaste pilotprijs, live bij echte klanten.',
-  alternates: { canonical: 'https://aiow.io' },
+  alternates: {
+    canonical: 'https://aiow.io',
+    languages: { 'nl-NL': 'https://aiow.io', en: 'https://aiow.io/en' },
+  },
   openGraph: {
     title: 'AIOW · AI voor het MKB',
     description:
