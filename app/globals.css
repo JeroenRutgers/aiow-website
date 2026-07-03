@@ -12,6 +12,12 @@
   --color-surface-sunken: #F3EEE6;
   --color-hairline: rgb(33 28 22 / 0.12);
 
+  /* Glimp landing tokens (aiow.io/glimp) */
+  --color-cream: #FAF7F2;
+  --color-terracotta: #D97D4A;
+  --color-dusk: #201A16;
+  --animate-glimp-glow: glimp-glow 2.6s var(--ease-cinematic) infinite;
+
   --font-sans: var(--font-ui), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif-display), "Source Serif 4", Georgia, serif;
 
@@ -73,6 +79,63 @@
   50% {
     opacity: 0.7;
     transform: scale(1.06);
+  }
+}
+
+/* ── Glimp landing (aiow.io/glimp) ─────────────────────────────────── */
+
+/* Warme cinematic grade over de hero video */
+@utility cinematic-grade {
+  filter: sepia(0.22) saturate(1.15) contrast(1.05) brightness(0.98);
+}
+
+/* Blur-behind chip voor de typewriter overlay */
+@utility blur-behind {
+  backdrop-filter: blur(12px) saturate(1.2);
+  background-color: rgb(42 32 24 / 0.28);
+  border: 1px solid rgb(250 247 242 / 0.15);
+}
+
+@keyframes glimp-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(217 125 74 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 26px 8px rgb(217 125 74 / 0.16);
+  }
+}
+
+@keyframes dust-drift {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  15% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.25;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-3px, 8px);
+  }
+}
+
+.dust-particle {
+  animation-name: dust-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dust-particle {
+    animation: none;
+    opacity: 0;
   }
 }
 

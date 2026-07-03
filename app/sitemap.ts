@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/voor-mkb`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/ai-bootcamp`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/over-aiow`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE_URL}/glimp`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     ...cases.map((c) => ({
       url: `${BASE_URL}/cases/${c.slug}`,
       lastModified: now,
