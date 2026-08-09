@@ -13,7 +13,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Ik heb geen IT-afdeling. Is dat een probleem?',
-    a: 'Nee, de meeste van onze klanten hebben er geen. Wij regelen techniek, hosting en onderhoud. U merkt alleen het resultaat.',
+    a: 'Dat hoeft niet. We richten eigenaarschap, techniek, hosting en onderhoud zo in dat een klein MKB-team ermee kan werken. Eén medewerker moet wel beschikbaar zijn voor inhoudelijke keuzes en acceptatie.',
   },
   {
     q: 'AVG en de EU AI Act: wat betekent dat voor mij?',
@@ -25,7 +25,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Hoe snel zie ik resultaat?',
-    a: 'In de pilot van 4 tot 6 weken staat er iets dat echt werkt in uw bedrijf. Niet een demo, maar een systeem met uw klanten erin.',
+    a: 'Een Startmodule / Pilot duurt meestal 4 tot 6 weken. Aan het einde staat één afgebakende workflow die met afgesproken bronnen en representatieve scenario’s is getest. Productiedata of klantcontact wordt alleen gebruikt wanneer scope, privacy en goedkeuring dat toelaten.',
   },
   {
     q: 'Wat kost het als het groter wordt?',

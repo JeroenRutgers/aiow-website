@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!c) return {}
   return {
     title: `${c.client}: ${c.industry} · AIOW case`,
-    description: `Hoe AIOW voor ${c.client} (${c.industry}) ${c.short.toLowerCase()} Bekijk aanpak, oplossing en resultaat.`,
+    description: `${c.status}: ${c.short} Bekijk aanpak, huidige bewijsstatus en vervolgstap.`,
     alternates: { canonical: `https://aiow.io/cases/${c.slug}` },
     openGraph: {
       title: `${c.client} · AIOW case`,
@@ -54,8 +54,8 @@ export default async function CasePage({ params }: Props) {
       <section className="border-b border-hairline bg-surface-sunken">
         <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
           <nav className="text-sm text-ink-40" aria-label="Breadcrumb">
-            <Link href="/#cases" className="hover:text-ink">
-              Cases
+            <Link href="/#bewijs" className="hover:text-ink">
+              Werkwijze
             </Link>{' '}
             / <span className="text-ink-60">{c.client}</span>
           </nav>
@@ -68,6 +68,9 @@ export default async function CasePage({ params }: Props) {
             </h1>
             <span className="rounded-full border border-hairline px-3 py-1 text-[11px] font-semibold uppercase tracking-kicker text-ink-60">
               {c.industry}
+            </span>
+            <span className="rounded-full bg-surface px-3 py-1 text-[11px] font-semibold uppercase tracking-kicker text-terra-text">
+              {c.status}
             </span>
           </div>
           <p className="mt-4 max-w-[56ch] text-lg leading-relaxed text-ink-60">{c.short}</p>
@@ -138,7 +141,7 @@ export default async function CasePage({ params }: Props) {
       <section className="border-y border-hairline bg-surface">
         <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
           <Reveal>
-            <p className="kicker !text-terra-text">Resultaat</p>
+            <p className="kicker !text-terra-text">Huidige bewijsstatus</p>
             <p
               className="mt-4 max-w-3xl font-serif leading-snug tracking-heading"
               style={{ fontSize: 'clamp(24px, 3vw, 32px)' }}

@@ -4,9 +4,10 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const LINKS = [
-  { href: '/#cases', label: 'Cases' },
-  { href: '/voor-mkb', label: 'Voor MKB' },
-  { href: '/ai-bootcamp', label: 'AI Bootcamp' },
+  { href: '/diensten', label: 'Diensten' },
+  { href: '/workflows', label: 'Workflows' },
+  { href: '/kennisbank', label: 'Kennisbank' },
+  { href: '/#bewijs', label: 'Werkwijze' },
   { href: '/over-aiow', label: 'Over AIOW' },
 ]
 
@@ -43,10 +44,10 @@ export default function SiteNav() {
             </Link>
           ))}
           <Link
-            href="/#contact"
+            href="/workflow-scan"
             className="rounded-full bg-terra px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-terra-deep"
           >
-            Plan kennismaking
+            Gratis Workflow Scan
           </Link>
         </div>
 
@@ -81,11 +82,11 @@ export default function SiteNav() {
             </Link>
           ))}
           <Link
-            href="/#contact"
+            href="/workflow-scan"
             onClick={() => setOpen(false)}
             className="mt-3 inline-block rounded-full bg-terra px-6 py-3 text-base font-semibold text-white"
           >
-            Plan kennismaking
+            Gratis Workflow Scan
           </Link>
         </div>
       )}

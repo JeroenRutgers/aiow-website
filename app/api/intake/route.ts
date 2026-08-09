@@ -1,93 +1,137 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Eenvoudige in-memory rate limit per IP (best-effort op serverless)
-const hits = new Map<string, { count: number; reset: number }>()
-const LIMIT = 5
-const WINDOW_MS = 10 * 60 * 1000
+import { genereerAdvies } from '@/lib/intake-advies'
+import { parseIntakePayload } from '@/lib/intake-validation'
 
-function rateLimited(ip: string): boolean {
+const rateLimit = new Map<string, { count: number; reset: number }>()
+const WINDOW_MS = 60_000
+const MAX_REQUESTS = 5
+
+function checkRateLimit(ip: string) {
   const now = Date.now()
-  const entry = hits.get(ip)
-  if (!entry || now > entry.reset) {
-    hits.set(ip, { count: 1, reset: now + WINDOW_MS })
-    return false
+  for (const [key, value] of rateLimit) {
+    if (value.reset <= now) rateLimit.delete(key)
   }
+
+  const entry = rateLimit.get(ip)
+  if (!entry || entry.reset <= now) {
+    rateLimit.set(ip, { count: 1, reset: now + WINDOW_MS })
+    return true
+  }
+
+  if (entry.count >= MAX_REQUESTS) return false
   entry.count += 1
-  return entry.count > LIMIT
+  return true
 }
 
-export async function POST(req: Request) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
-  if (rateLimited(ip)) return NextResponse.json({ ok: false }, { status: 429 })
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => {
+    const entities: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#039;',
+      '"': '&quot;',
+    }
+    return entities[character]
+  })
+}
 
-  let body: Record<string, unknown>
-  try {
-    body = await req.json()
-  } catch {
-    return NextResponse.json({ ok: false }, { status: 400 })
+export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { success: false, error: 'Te veel verzoeken. Probeer het over een minuut opnieuw.' },
+      { status: 429 },
+    )
   }
 
-  const { branche, pijnpunt, teamgrootte, timing, email, advies, website } = body as Record<
-    string,
-    string | undefined
-  >
+  let rawPayload: unknown
+  try {
+    rawPayload = await request.json()
+  } catch {
+    return NextResponse.json({ success: false, error: 'Ongeldige invoer.' }, { status: 400 })
+  }
 
-  // Honeypot: echte bezoekers laten dit veld leeg
-  if (website) return NextResponse.json({ ok: true })
+  const parsed = parseIntakePayload(rawPayload)
+  if (!parsed.ok) {
+    return NextResponse.json({ success: false, error: parsed.error }, { status: 400 })
+  }
 
-  if (!branche || !pijnpunt) return NextResponse.json({ ok: false }, { status: 400 })
+  const { name, email, website, answers } = parsed.value
+  if (website) return NextResponse.json({ success: true })
 
-  const lines = [
-    'Nieuwe AI-intake via aiow.io',
-    `Branche: ${branche}`,
-    `Pijnpunt: ${pijnpunt}`,
-    `Team: ${teamgrootte ?? '-'}`,
-    `Timing: ${timing ?? '-'}`,
-    `E-mail bezoeker: ${email ?? 'niet opgegeven'}`,
-    `Gegeven advies: ${advies ?? '-'}`,
+  const advies = genereerAdvies(answers)
+  const message = [
+    'Nieuwe AIOW AI-intake',
+    '',
+    `Naam: ${name}`,
+    `E-mail: ${email}`,
+    `Branche: ${answers.branche}`,
+    `Proces: ${answers.pijnpunt}`,
+    `Team: ${answers.teamgrootte}`,
+    `Timing: ${answers.timing}`,
+    '',
+    `Advies: ${advies.tekst}`,
   ].join('\n')
 
-  if (process.env.RESEND_API_KEY) {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'AIOW Intake <intake@aiow.io>',
-        to: 'jeroen@aiow.io',
-        subject: `AI-intake: ${branche} · ${timing ?? 'timing onbekend'}`,
-        text: lines,
-        ...(email ? { reply_to: email } : {}),
-      }),
-    }).catch(() => {})
+  const deliveries: Promise<Response>[] = []
 
-    // Kopie naar de bezoeker als die om het advies vroeg
-    if (email && advies) {
-      await fetch('https://api.resend.com/emails', {
+  const telegramToken = process.env.TELEGRAM_BOT_TOKEN
+  const telegramChatId = process.env.TELEGRAM_CHAT_ID
+  if (telegramToken && telegramChatId) {
+    deliveries.push(
+      fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: telegramChatId, text: message }),
+      }),
+    )
+  }
+
+  const resendKey = process.env.RESEND_API_KEY
+  if (resendKey) {
+    deliveries.push(
+      fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          Authorization: `Bearer ${resendKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'AIOW <intake@aiow.io>',
-          to: email,
-          subject: 'Uw AI-advies van aiow.io',
-          text: `U vroeg dit advies aan via aiow.io:\n\n${advies}\n\nVragen? Antwoord gewoon op deze mail, of plan een kennismaking van 30 minuten via https://aiow.io/#contact\n\nGroet,\nJeroen · AIOW`,
+          from: 'AIOW Website <intake@aiow.io>',
+          to: ['jeroen@aiow.io'],
+          reply_to: email,
+          subject: `Nieuwe AI-intake van ${name}`,
+          text: message,
+          html: `<pre style="font-family:system-ui;white-space:pre-wrap">${escapeHtml(message)}</pre>`,
         }),
-      }).catch(() => {})
+      }),
+    )
+  }
+
+  if (deliveries.length === 0) {
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { success: false, error: 'Verzenden is tijdelijk niet beschikbaar. Mail jeroen@aiow.io.' },
+        { status: 503 },
+      )
     }
+    return NextResponse.json({ success: true, preview: true })
   }
 
-  if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
-    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: process.env.TELEGRAM_CHAT_ID, text: lines }),
-    }).catch(() => {}) // Telegram is best-effort
+  const results = await Promise.allSettled(deliveries)
+  const delivered = results.some(
+    (result) => result.status === 'fulfilled' && result.value.ok,
+  )
+
+  if (!delivered) {
+    return NextResponse.json(
+      { success: false, error: 'Verzenden is tijdelijk niet beschikbaar. Mail jeroen@aiow.io.' },
+      { status: 503 },
+    )
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ success: true })
 }
