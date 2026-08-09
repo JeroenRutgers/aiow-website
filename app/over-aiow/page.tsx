@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const team = [
   {
-    role: 'Jeroen · eigenaar en eindbeslisser',
+    role: 'Jeroen · aanspreekpunt en eindbeslisser',
     text: 'Bepaalt scope, klantbelofte, prioriteit en externe goedkeuring. U spreekt rechtstreeks met de persoon die verantwoordelijk blijft voor het resultaat.',
   },
   {
@@ -45,9 +45,9 @@ export default function AboutPage() {
           <p className="platform-kicker">Over AIOW</p>
           <h1 className="platform-hero__title max-w-[11ch]">Een mens aan tafel. Een AI-team achter het werk.</h1>
           <p className="platform-hero__intro max-w-2xl">
-            AIOW is opgericht door Jeroen Rutgers. We combineren directe menselijke
-            verantwoordelijkheid met gespecialiseerde AI-agents voor product, techniek, research,
-            review en operations.
+            AIOW is opgericht door Jeroen Rutgers, Richard Vermeer en Kenny Vermeer. Vanuit die basis
+            combineren we directe menselijke verantwoordelijkheid met gespecialiseerde AI-agents voor
+            product, techniek, research, review en operations.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/diensten" className="button-primary button-primary--light">Bekijk onze diensten</Link>
