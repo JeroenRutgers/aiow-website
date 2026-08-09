@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 const team = [
   {
-    role: 'Jeroen · aanspreekpunt en eindbeslisser',
-    text: 'Bepaalt scope, klantbelofte, prioriteit en externe goedkeuring. U spreekt rechtstreeks met de persoon die verantwoordelijk blijft voor het resultaat.',
+    role: 'Jeroen · aanspreekpunt',
+    text: 'Begeleidt de intake, vertaalt de praktijk naar een heldere opdracht en blijft gedurende het traject rechtstreeks bereikbaar.',
   },
   {
     role: 'Product en ontwerp',
