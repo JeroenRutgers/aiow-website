@@ -25,12 +25,17 @@ const securityHeaders = [
   },
 ]
 
+const stagingHeaders =
+  process.env.AIOW_STAGING === '1'
+    ? [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }]
+    : []
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
       {
         source: '/(.*)',
-        headers: securityHeaders,
+        headers: [...securityHeaders, ...stagingHeaders],
       },
     ]
   },
