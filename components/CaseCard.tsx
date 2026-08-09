@@ -12,10 +12,11 @@ export default function CaseCard({ c, compact = false }: { c: Case; compact?: bo
       className="group flex h-full flex-col justify-between border border-hairline bg-surface p-8 transition-colors duration-500 hover:border-ink-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra md:p-10"
     >
       <div>
-        <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <span className="font-serif text-2xl tracking-heading">{c.client}</span>
-          <span className="whitespace-nowrap rounded-full border border-hairline px-3 py-1 text-[11px] font-semibold uppercase tracking-kicker text-ink-60">
-            {c.industry}
+          <span className="flex flex-wrap justify-end gap-2">
+            <span className="whitespace-nowrap rounded-full bg-surface-sunken px-3 py-1 text-[10px] font-semibold uppercase tracking-kicker text-terra-text">{c.status}</span>
+            <span className="whitespace-nowrap rounded-full border border-hairline px-3 py-1 text-[10px] font-semibold uppercase tracking-kicker text-ink-60">{c.industry}</span>
           </span>
         </div>
         <p className="text-[17px] leading-relaxed text-ink-60">{compact ? c.short : c.built}</p>

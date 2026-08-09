@@ -45,7 +45,7 @@ const PIJN_MAP: Record<string, Advies> = {
     caseNaam: 'RoosterCopilot',
   },
   'Opvolging van leads': {
-    oplossing: 'leadopvolging die binnen een minuut reageert en direct een afspraak boekt',
+    oplossing: 'gestructureerde leadopvolging met een conceptreactie, taak en zichtbaar goedkeuringsmoment',
     caseSlug: 'doorz',
     caseNaam: 'DOORZ',
   },
@@ -84,7 +84,7 @@ export function genereerAdvies(a: IntakeAnswers): {
         : 'Een vrijblijvend gesprek van 30 minuten geeft u een concreet beeld en een prijsindicatie.'
 
   return {
-    tekst: `Voor een ${a.branche.toLowerCase()}-bedrijf met ${a.teamgrootte} medewerkers is ${pijn.oplossing} meestal de snelste winst. Vergelijkbaar met wat we voor ${kies.naam} bouwden. ${tempo}`,
+    tekst: `Voor een ${a.branche.toLowerCase()}-bedrijf met ${a.teamgrootte} medewerkers is ${pijn.oplossing} een kansrijke eerste richting. De ${kies.naam}-pagina laat zien hoe dit patroon kan worden uitgewerkt. ${tempo}`,
     caseSlug: kies.slug,
     caseNaam: kies.naam,
   }

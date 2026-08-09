@@ -22,9 +22,15 @@ export default function HeroVideo({ mp4Src, webmSrc, poster, className, children
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const conn = (navigator as unknown as { connection?: { saveData?: boolean } }).connection
-    if (!reduced && !conn?.saveData) setShowVideo(true)
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const connection = (navigator as unknown as { connection?: { saveData?: boolean } }).connection
+    const update = () => setShowVideo(!media.matches && !connection?.saveData)
+    const timer = window.setTimeout(update, 0)
+    media.addEventListener('change', update)
+    return () => {
+      window.clearTimeout(timer)
+      media.removeEventListener('change', update)
+    }
   }, [])
 
   return (

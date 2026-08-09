@@ -1,122 +1,127 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
+import BookingSection from '@/components/BookingSection'
 import Reveal from '@/components/Reveal'
-import GlowPulseButton from '@/components/GlowPulseButton'
 
 export const metadata: Metadata = {
-  title: 'Over AIOW · klein team, werkende AI, gebouwd in NL',
+  title: 'Over AIOW · een mens en een gecontroleerd AI-team',
   description:
-    'Waarom AIOW anders werkt dan bureaus: agent-first ontwikkeling, vaste prijzen, Nederlandse data en direct contact.',
+    'AIOW bouwt praktische AI-workflows en beheerde agents voor Nederlandse bedrijven, met Jeroen als aanspreekpunt en aantoonbare review- en goedkeuringsgates.',
   alternates: { canonical: 'https://aiow.io/over-aiow' },
 }
 
-const CAPACITEITEN = [
+const team = [
   {
-    title: 'Bouwen en deployen',
-    text: 'Van ontwerp tot livegang: componenten, integraties en hosting, in dagen in plaats van sprints.',
+    role: 'Jeroen · aanspreekpunt',
+    text: 'Begeleidt de intake, vertaalt de praktijk naar een heldere opdracht en blijft gedurende het traject rechtstreeks bereikbaar.',
   },
   {
-    title: 'Kwaliteit en review',
-    text: 'Elke oplossing wordt getoetst op werking, veiligheid en toegankelijkheid voordat die live gaat.',
+    role: 'Product en ontwerp',
+    text: 'Productflows, copy en visuele keuzes krijgen een aparte specialistische review voordat een publieke versie wordt voorgesteld.',
   },
   {
-    title: 'Planning en bewaking',
-    text: 'Systemen worden live gemonitord. Als iets afwijkt, weten wij het eerder dan u.',
+    role: 'Architectuur en technische QA',
+    text: 'Security, databronnen, goedkeuringsgrenzen, tests, bewijs en herstelpaden worden als één systeem beoordeeld.',
+  },
+  {
+    role: 'Delivery en operations',
+    text: 'Builds, integraties, deployment en productiecontrole volgen vaste acceptatie- en rollbackstappen.',
   },
 ]
 
-const VERSCHILLEN = [
-  ['Vaste prijzen', 'Geen uurtarief dat oploopt, maar een bedrag dat vooraf vaststaat.'],
-  ['Werkende software', 'Geen adviesrapport als eindproduct, maar een systeem dat draait.'],
-  ['Eén aanspreekpunt', 'Geen accountmanagement-lagen. U belt, Jeroen neemt op.'],
+const principles = [
+  ['Eén eigenaar per resultaat', 'Elk belangrijk werkitem heeft één lead, één builder en een andere reviewer.'],
+  ['Menselijke gate vóór impact', 'Verzenden, publiceren, betalen en andere externe acties vragen een expliciet akkoord.'],
+  ['Bewijs hoort bij oplevering', 'Builds, tests, screenshots, bronverwijzingen en herstelstappen horen bij het product.'],
+  ['Uw data blijft van u', 'Accounts, projectdata en bedrijfsspecifieke configuratie blijven overdraagbaar en intrekbaar.'],
 ]
 
-export default function OverAiowPage() {
+export default function AboutPage() {
   return (
     <main className="pt-16">
-      <section className="border-b border-hairline bg-surface-sunken">
-        <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-          <p className="kicker">Over AIOW</p>
-          <h1
-            className="mt-4 max-w-3xl font-serif font-semibold tracking-display"
-            style={{ fontSize: 'clamp(36px, 5.5vw, 64px)' }}
-          >
-            Klein team. Grote output. Alles in Nederland.
-          </h1>
+      <section className="platform-hero min-h-[68svh]">
+        <div className="mx-auto max-w-7xl px-5 pb-20 pt-24 md:px-8 md:pb-28 md:pt-32">
+          <p className="platform-kicker">Over AIOW</p>
+          <h1 className="platform-hero__title max-w-[11ch]">Een mens aan tafel. Een AI-team achter het werk.</h1>
+          <p className="platform-hero__intro max-w-2xl">
+            AIOW is opgericht door Jeroen Rutgers, Richard Vermeer en Kenny Vermeer. Vanuit die basis
+            combineren we directe menselijke verantwoordelijkheid met gespecialiseerde AI-agents voor
+            product, techniek, research, review en operations.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/diensten" className="button-primary button-primary--light">Bekijk onze diensten</Link>
+            <Link href="/#contact" className="button-secondary button-secondary--dark">Neem contact op</Link>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-        <div className="grid gap-12 lg:grid-cols-2">
-          <Reveal>
-            <p className="kicker">Het verhaal</p>
-            <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink-60">
-              <p>
-                AIOW is gestart door Jeroen Rutgers, een bouwer die van ambacht houdt: van
-                natuursteen tot software. De rode draad is hetzelfde. Goed kijken hoe iets echt
-                gebruikt wordt, en dan iets maken dat jaren meegaat.
-              </p>
-              <p>
-                AIOW bestaat om AI uit de hype te halen en in bedrijven te zetten. Geen
-                strategiedecks, geen prototypes die in een la verdwijnen, maar systemen die
-                maandag meedraaien in het echte werk.
-              </p>
-              <p>
-                Bewust een klein bureau. Dat betekent korte lijnen, snelle beslissingen en een
-                leverancier die gewoon opneemt.
-              </p>
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="kicker">Hoe we werken: agent-first</p>
-            <p className="mt-4 text-lg leading-relaxed text-ink-60">
-              Naast Jeroen werkt een vast team van AI-agents die bouwen, testen en bewaken.
-              Daardoor levert AIOW met een klein team wat traditionele bureaus met tien man doen,
-              in weken in plaats van maanden. U merkt het aan tempo en prijs.
+      <section className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
+        <Reveal className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
+          <div>
+            <p className="kicker">Het vertrekpunt</p>
+            <h2 className="section-title">AI moet passen bij het echte werk.</h2>
+          </div>
+          <div className="grid gap-5 text-lg leading-relaxed text-ink-60">
+            <p>
+              Jeroen bouwt vanuit twee werelden: ambacht en software. In beide telt hetzelfde.
+              Eerst goed kijken hoe mensen, materiaal en informatie zich in de praktijk gedragen.
+              Daarna pas een systeem ontwerpen.
             </p>
-            <div className="mt-8 divide-y divide-hairline border-y border-hairline">
-              {CAPACITEITEN.map((cap) => (
-                <div key={cap.title} className="py-5">
-                  <h3 className="font-semibold">{cap.title}</h3>
-                  <p className="mt-1 text-[15px] leading-relaxed text-ink-60">{cap.text}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
+            <p>
+              DecoStone is onze dagelijkse praktijkomgeving. Offertes, facturen, projecten,
+              klantcommunicatie en een vakinhoudelijke kennisbank laten iedere dag zien waar AI
+              versnelt en waar menselijk oordeel nodig blijft.
+            </p>
+            <p>
+              Die lessen vertalen we naar afgebakende workflows voor andere bedrijven. Iedere stap
+              heeft een eigenaar, een controlepunt en een terugvalmogelijkheid.
+            </p>
+          </div>
+        </Reveal>
       </section>
 
       <section className="bg-surface-sunken">
-        <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
           <Reveal>
-            <p className="kicker">Waarom NL-first</p>
-            <p
-              className="mt-4 max-w-3xl font-serif leading-snug tracking-heading"
-              style={{ fontSize: 'clamp(22px, 2.8vw, 30px)' }}
-            >
-              Data in Europa. Nederlandse taal in elk klantcontact. AVG en EU AI Act als
-              ontwerpvoorwaarde in plaats van verrassing achteraf. En gewoon: bereikbaar op
-              Nederlandse werktijden.
-            </p>
+            <p className="kicker">Het teammodel</p>
+            <h2 className="section-title max-w-3xl">Specialisten werken samen onder één verantwoordelijkheid.</h2>
           </Reveal>
+          <div className="mt-12 grid gap-4 md:grid-cols-2">
+            {team.map((item, index) => (
+              <Reveal key={item.role} delay={(index % 2) * 80} className="rounded-[24px] border border-hairline bg-surface p-7">
+                <p className="font-serif text-2xl font-semibold tracking-heading">{item.role}</p>
+                <p className="mt-4 text-sm leading-relaxed text-ink-60">{item.text}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+      <section className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
         <Reveal>
-          <p className="kicker">Anders dan bureaus</p>
+          <p className="kicker">Werkprincipes</p>
+          <h2 className="section-title max-w-3xl">Controle is onderdeel van het ontwerp.</h2>
         </Reveal>
-        <div className="mt-8 divide-y divide-hairline border-y border-hairline">
-          {VERSCHILLEN.map(([titel, tekst], i) => (
-            <Reveal key={titel} delay={i * 80} className="grid gap-2 py-6 md:grid-cols-[240px_1fr] md:gap-8">
-              <h3 className="font-semibold">{titel}</h3>
-              <p className="leading-relaxed text-ink-60">{tekst}</p>
+        <div className="mt-10 divide-y divide-hairline border-y border-hairline">
+          {principles.map(([title, text], index) => (
+            <Reveal key={title} delay={index * 60} className="grid gap-2 py-6 md:grid-cols-[18rem_1fr] md:gap-10">
+              <h3 className="font-semibold">{title}</h3>
+              <p className="leading-relaxed text-ink-60">{text}</p>
             </Reveal>
           ))}
         </div>
-        <Reveal delay={300} className="mt-16 text-center">
-          <GlowPulseButton href="/#contact">Plan een kennismaking (30 min)</GlowPulseButton>
-        </Reveal>
+      </section>
+
+      <section className="border-t border-hairline bg-surface-sunken">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
+          <Reveal className="text-center">
+            <p className="kicker">Rechtstreeks contact</p>
+            <h2 className="section-title mx-auto max-w-3xl">Bespreek uw proces met Jeroen.</h2>
+            <p className="section-intro mx-auto max-w-2xl">U krijgt een eerlijke eerste inschatting van de kans, de randvoorwaarden en een passende volgende stap.</p>
+          </Reveal>
+          <Reveal delay={100} className="mt-12"><BookingSection /></Reveal>
+        </div>
       </section>
     </main>
   )

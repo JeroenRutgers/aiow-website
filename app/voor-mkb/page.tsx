@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 
 import Reveal from '@/components/Reveal'
 import AIIntakeDemo from '@/components/AIIntakeDemo'
@@ -16,8 +15,8 @@ export const metadata: Metadata = {
 
 const PILOT_WEKEN = [
   { week: 'Week 1', text: 'We kijken mee in uw proces: waar gaat tijd verloren, wat moet er echt anders.' },
-  { week: 'Week 2-3', text: 'We bouwen op uw echte data en workflow, niet op een demo-dataset.' },
-  { week: 'Week 4-5', text: 'Live met uw team: echte klanten, echte aanvragen, echte resultaten.' },
+  { week: 'Week 2-3', text: 'We bouwen met afgesproken bronnen en veilig gemaakte praktijkscenario’s.' },
+  { week: 'Week 4-5', text: 'Uw team test de workflow op representatieve aanvragen, fouten en uitzonderingen.' },
   { week: 'Week 6', text: 'Meten en beslissen: wat levert het op, en wat is de volgende stap.' },
 ]
 
