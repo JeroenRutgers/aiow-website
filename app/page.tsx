@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import AgentWorkflowDemo from '@/components/AgentWorkflowDemo'
 import BookingSection from '@/components/BookingSection'
+import HeroFilm from '@/components/HeroFilm'
 import Reveal from '@/components/Reveal'
 import WorkflowExplorer from '@/components/WorkflowExplorer'
 import { knowledgeArticles, services } from '@/lib/ai-platform'
@@ -134,45 +135,9 @@ export default function Home() {
     <main>
       <JsonLd />
 
-      <section className="platform-hero">
-        <div className="platform-hero__glow" aria-hidden="true" />
-        <div className="mx-auto grid min-h-[92svh] max-w-7xl items-center gap-14 px-5 pb-20 pt-28 md:px-8 lg:grid-cols-[0.86fr_1.14fr] lg:gap-16 lg:pb-24">
-          <div className="relative z-10">
-            <p className="platform-kicker">AIOW · AI leren, bouwen en beheren</p>
-            <h1 className="platform-hero__title">
-              Leer AI.
-              <br />
-              Bouw wat werkt.
-              <br />
-              <span>Schaal met controle.</span>
-            </h1>
-            <p className="platform-hero__intro">
-              Wij helpen Nederlandse bedrijven van eerste AI-vraag naar één werkende workflow en
-              een beheerd productiesysteem. Met heldere lessen, echte systemen en menselijke controle.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/workflow-scan" className="button-primary button-primary--light">
-                Doe de gratis Workflow Scan
-              </Link>
-              <Link href="/kennisbank" className="button-secondary button-secondary--dark">
-                Leer gratis over AI
-              </Link>
-            </div>
-            <div className="platform-hero__trust">
-              <span>NL bedrijf</span>
-              <span>Vaste scope vooraf</span>
-              <span>Mens beslist</span>
-              <span>Eigen data en accounts</span>
-            </div>
-          </div>
+      <HeroFilm />
 
-          <div className="relative z-10 lg:pt-8">
-            <AgentWorkflowDemo />
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-hairline bg-surface">
+      <section id="home-products" className="border-b border-hairline bg-surface">
         <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-hairline px-5 md:grid-cols-4 md:px-8">
           {[
             ['Gratis', 'Workflow Scan'],
@@ -187,6 +152,33 @@ export default function Home() {
               <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-ink-40">{label}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="workflow-proof" className="scroll-mt-20 bg-canvas">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 md:px-8 md:py-32 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+          <Reveal>
+            <p className="kicker">Werkend bewijs</p>
+            <h2 className="section-title">AI die meewerkt, blijft controleerbaar.</h2>
+            <p className="section-intro">
+              Geen losse chatbot. Een afgebakende workflow die bronnen leest, werk voorbereidt en
+              vóór externe impact op een mens wacht.
+            </p>
+            <div className="mt-8 grid gap-4 text-sm text-ink-60 sm:grid-cols-3 lg:grid-cols-1">
+              <p>
+                <strong className="block text-ink">01 · Context</strong> De juiste bronnen en ontbrekende informatie.
+              </p>
+              <p>
+                <strong className="block text-ink">02 · Voorwerk</strong> Een zichtbaar concept met eigenaar en vervolgstap.
+              </p>
+              <p>
+                <strong className="block text-ink">03 · Besluit</strong> Verzenden of uitvoeren gebeurt pas na akkoord.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <AgentWorkflowDemo />
+          </Reveal>
         </div>
       </section>
 

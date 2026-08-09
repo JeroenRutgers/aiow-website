@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const LINKS = [
@@ -12,8 +13,10 @@ const LINKS = [
 ]
 
 export default function SiteNav() {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const overHero = pathname === '/' && !scrolled && !open
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -24,8 +27,10 @@ export default function SiteNav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md transition-colors duration-500 ${
-        scrolled || open ? 'border-hairline bg-canvas/90' : 'border-transparent bg-canvas/75'
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${
+        overHero
+          ? 'border-white/15 bg-transparent text-white'
+          : 'border-hairline bg-canvas/90 text-ink backdrop-blur-md'
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:px-8">
@@ -38,14 +43,20 @@ export default function SiteNav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-ink-60 transition-colors hover:text-ink"
+              className={`text-sm font-medium transition-colors ${
+                overHero ? 'text-white/75 hover:text-white' : 'text-ink-60 hover:text-ink'
+              }`}
             >
               {l.label}
             </Link>
           ))}
           <Link
             href="/workflow-scan"
-            className="rounded-full bg-terra px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-terra-deep"
+            className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
+              overHero
+                ? 'bg-white text-[#171411] hover:bg-[#ef9c6d]'
+                : 'bg-terra text-white hover:bg-terra-deep'
+            }`}
           >
             Gratis Workflow Scan
           </Link>
@@ -60,10 +71,14 @@ export default function SiteNav() {
         >
           <span className="relative block h-3 w-5">
             <span
-              className={`absolute left-0 top-0 h-px w-full bg-ink transition-transform duration-300 ${open ? 'translate-y-[5.5px] rotate-45' : ''}`}
+              className={`absolute left-0 top-0 h-px w-full transition-transform duration-300 ${
+                overHero ? 'bg-white' : 'bg-ink'
+              } ${open ? 'translate-y-[5.5px] rotate-45' : ''}`}
             />
             <span
-              className={`absolute bottom-0 left-0 h-px w-full bg-ink transition-transform duration-300 ${open ? '-translate-y-[5.5px] -rotate-45' : ''}`}
+              className={`absolute bottom-0 left-0 h-px w-full transition-transform duration-300 ${
+                overHero ? 'bg-white' : 'bg-ink'
+              } ${open ? '-translate-y-[5.5px] -rotate-45' : ''}`}
             />
           </span>
         </button>
